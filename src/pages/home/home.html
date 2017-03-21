@@ -36,7 +36,14 @@
 
         </ion-item>
 
-        <button ion-button round style="margin-top: 20px">Sign Up</button>
+        <button ion-button round style="margin-top: 20px" (click)="signup()">Sign Up</button>
+
+        <p class="swipity">
+
+            Returning User?
+            <ion-icon name="arrow-round-forward"></ion-icon>
+
+        </p>
 
       </ion-list>
 
@@ -61,7 +68,14 @@
 
         </ion-item>
 
-        <button ion-button round style="margin-top: 20px">Log in</button>
+        <button ion-button round style="margin-top: 20px" (click)="login()">Log in</button>
+
+        <p class="swipity">
+
+          <ion-icon name="arrow-round-back"></ion-icon>
+            New User?
+
+        </p>
 
       </ion-list>
 

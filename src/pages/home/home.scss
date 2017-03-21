@@ -3,12 +3,14 @@
 
 page-home {
 
+          /* General Content style  */
           .content {
                     background: #00c6ff; /* fallback for old browsers */
                     background: -webkit-linear-gradient(to left, #00c6ff , #0072ff); /* Chrome 10-25, Safari 5.1-6 */
                     background: linear-gradient(to left, #00c6ff , #0072ff); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
                     color: #fff;
 
+                    /* Slide One Content style  */
                     .slideOne{
 
                               h2 {
@@ -31,14 +33,17 @@ page-home {
 
                               p.swipity {
                                         position: absolute;
-                                        bottom: 0;
-                                        text-align: center;
+                                        bottom: 20px;
+                                        padding-left: 120px;
                                         font-family: 'Nova Oval', cursive;
+                                        font-size: 16px;
                                         color: #fff;
                               }
 
                     }
+                    /* Slide One Content style END */
 
+                    /* Slide two Content style  */
                     .slideTwo {
 
                               h2 {
@@ -58,8 +63,19 @@ page-home {
                                                   border-bottom: 3px solid #fff;
                                         }
                               }
-                    }
 
+                              p.swipity {
+                                        position: absolute;
+                                        bottom: 20px;
+                                        padding-left: 120px;
+                                        font-family: 'Nova Oval', cursive;
+                                        font-size: 16px;
+                                        color: #fff;
+                              }
+                    }
+                    /* Slide Two Content style END */
+
+                    /* Slide Three Content style  */
                     .slideThree {
 
                               h2 {
@@ -79,7 +95,17 @@ page-home {
                                                   border-bottom: 3px solid #fff;
                                         }
                               }
+
+                              p.swipity {
+                                        position: absolute;
+                                        bottom: 20px;
+                                        padding-left: 140px;
+                                        font-family: 'Nova Oval', cursive;
+                                        font-size: 16px;
+                                        color: #fff;
+                              }
                     }
+                    /* Slide Three Content style END */
 
           }
 
