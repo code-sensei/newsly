@@ -1,0 +1,82 @@
+<ion-content no-padding class="content">
+
+  <ion-slides pager>
+
+    <ion-slide class="slideOne">
+      <h2>This is <span class="hint">Newsly</span>.</h2>
+      <p>Your favorite source for the news</p>
+
+      <a href="#newUser" class="action">
+
+        <button ion-button round class="newUser" (click)="toInterestPage()">New User</button>
+
+      </a>
+
+      <a href="#retUser" class="action">
+
+        <button ion-button round class="newUser">Returning User</button>
+
+      </a>
+
+    </ion-slide>
+
+    <ion-slide class="slideTwo" id="newUser">
+      <h2>New User Sign Up</h2>
+
+      <ion-list no-lines>
+
+        <ion-item>
+
+            <ion-label floating >username</ion-label>
+            <ion-input type="text" [(ngModel)]="newUsername"></ion-input>
+
+        </ion-item>
+
+        <ion-item>
+
+            <ion-label floating >email</ion-label>
+            <ion-input type="email" [(ngModel)]="newEmail"></ion-input>
+
+        </ion-item>
+
+        <ion-item>
+
+            <ion-label floating >password</ion-label>
+            <ion-input type="password" [(ngModel)]="newPassword"></ion-input>
+
+        </ion-item>
+
+        <button ion-button round style="margin-top: 20px">Sign Up</button>
+
+      </ion-list>
+
+    </ion-slide>
+
+    <ion-slide class="slideThree" id="retUser">
+      <h2>Welcome Back!!!</h2>
+
+      <ion-list no-lines>
+
+        <ion-item>
+
+            <ion-label floating >email</ion-label>
+            <ion-input type="email" [(ngModel)]="retEmail"></ion-input>
+
+        </ion-item>
+
+        <ion-item>
+
+            <ion-label floating >password</ion-label>
+            <ion-input type="password" [(ngModel)]="retPassword"></ion-input>
+
+        </ion-item>
+
+        <button ion-button round style="margin-top: 20px">Log in</button>
+
+      </ion-list>
+
+    </ion-slide>
+
+  </ion-slides>
+
+</ion-content>
