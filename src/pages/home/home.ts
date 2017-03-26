@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { Auth, User, UserDetails, IDetailedError } from '@ionic/cloud-angular';
 import { NavController, AlertController, LoadingController, ToastController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 import { InterestPage } from '../interest-page/interest-page';
+import { FeedPage } from '../feed/feed';
 
 @Component({
   selector: 'page-home',
@@ -10,22 +12,36 @@ import { InterestPage } from '../interest-page/interest-page';
 })
 export class HomePage {
 
-  newUsername: string;
+  newUsername: any;
   newEmail: any;
-  newPassword: string;
+  newPassword: any;
   retEmail: any;
-  retUsername: string;
-  retPassword: string;
+  retUsername: any;
+  retPassword: any;
 
   constructor(public navCtrl: NavController,  public auth: Auth,  public user: User, 
-                      public alert: AlertController, public loading: LoadingController, public toast: ToastController) {
-
-
-    
+                      public alert: AlertController, public loading: LoadingController, public toast: ToastController,
+                      public storage: Storage) { 
   }
 
   toInterestPage() {
     this.navCtrl.push(InterestPage);
+  }
+
+   login() {
+    //login user
+    let details = {'email': this.retEmail, 'password': this.retPassword};
+
+    this.auth.login('basic', details).then(() => {
+      //Successful login
+      let toast = this.toast.create({
+        message: "Login Successful",
+        duration: 1500
+      });
+      toast.present();
+      //set navigation root page to the FeedPage 
+      this.navCtrl.setRoot(FeedPage);
+    });
   }
 
 //Signup function to sign up using the ionic cloud auth service
@@ -42,9 +58,38 @@ export class HomePage {
       });
       alert.present();
 
-      this.retEmail = this.newEmail;
-      this.retPassword = this.newPassword;
-      this.retUsername = this.newUsername;
+      //Set user cloud details
+      this.user.details.username = this.newUsername;
+      this.user.details.email = this.newEmail;
+      this.user.details.password = this.newPassword;
+
+      //store user data locally
+      this.storage.ready().then(() => {
+        this.storage.set('username', this.user.details.username)
+        this.storage.set('email', this.user.details.email)
+        this.storage.set('password', this.user.details.password)
+      })
+
+      //retrieve user data from local storage
+      this.storage.ready().then(() => {
+        this.storage.get('username').then((val) => {
+          this.retUsername = val
+          console.log('Retrieved username: ' + this.retUsername)
+        });
+        this.storage.get('email').then((val) => {
+          this.retEmail = val
+          console.log('Retrieved Email: ' + this.retEmail)
+        });
+        this.storage.get('password').then((val) => {
+          this.retPassword = val
+          console.log('Retrieved Password: ' + this.retPassword)
+        });
+
+        console.log(this.retEmail + ' ' + this.retPassword + ' ' + this.retUsername);
+      });
+
+      //Take user to select interests
+      this.toInterestPage()
 
     }, (err: IDetailedError<string[]>) => {
       for (let e of err.details) {
@@ -97,21 +142,6 @@ export class HomePage {
           alert.present();
         }
       }
-    });
-
-  }
-
-  login() {
-    //login user
-    let details = {'email': this.retEmail, 'password': this.retPassword};
-
-    this.auth.login('basic', details).then(() => {
-      //Successful login
-      let toast = this.toast.create({
-        message: "Login Successful",
-        duration: 1500
-      });
-      toast.present();
     });
   }
 

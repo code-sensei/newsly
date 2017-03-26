@@ -11,7 +11,7 @@
 
   <ion-list inset no-lines>
     
-    <ion-item *ngFor="let interest of interests">
+    <ion-item *ngFor="let interest of default_interests">
 
         <ion-label>{{interest.title}}</ion-label>
         <ion-checkbox [checked]="interest.isChecked"  (click)="toggleChecked(interest)"></ion-checkbox>
@@ -19,5 +19,9 @@
     </ion-item>
 
   </ion-list>
+
+  <button ion-button round (click)="customInterest()" class="add">Add Interest</button>
+
+  <button ion-button round (click)="addUserInterest()" class="interest">What next?</button>
 
 </ion-content>
