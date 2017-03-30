@@ -27,10 +27,6 @@ new_interest: string;
       isChecked: false 
     },
     {
-      title: "Geek Stuff",
-      isChecked: false 
-    },
-    {
       title: "Entertainment",
       isChecked: false 
     },

@@ -13,6 +13,8 @@ page-interest {
                               background-color: transparent;
 
                               ion-label {
+                                        font-family: 'Nova Oval', cursive;
+                                        font-size: 18px;
                                         color: #fff;
                               }
                               
@@ -20,6 +22,12 @@ page-interest {
 
                     button.add {
                               margin-left: 40px;
+                    }
+
+                    button.add, button.interest {
+                              font-family: 'Nova Oval', cursive;
+                              font-size: 16px;
+                              color: #fff;
                     }
 
                     h2 {

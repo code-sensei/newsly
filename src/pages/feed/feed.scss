@@ -6,6 +6,14 @@ page-feed {
           .content {
                     background: #00c6ff;
                     color: #fff;
+
+                    h2 {
+                              font-family: 'Nova Mono', monospace;
+                    }
+
+                    .center-align {
+                              text-align: center
+                    }
           }
 
 }

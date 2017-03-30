@@ -24,6 +24,8 @@ export class FeedPage {
 
   valid_sources: any[] = []
 
+  articles: any[] = []
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public http: Http, public storage: Storage) {
 
     //Get user_interests pushed from the interests page during signup
@@ -33,6 +35,63 @@ export class FeedPage {
     this.user_interests = interests
     console.log(this.user_interests)
 
+    //Get user sources 
+    this.get_sources()
+
+    //Get user articles
+    this.get_articles()
+
+    console.error(this.articles)
+
+  }
+
+  //Function to format sources into valid sources supplied by newsapi.org
+  format_sources() {
+
+    //Specify starting point
+    let index: number = 0
+
+    this.storage.ready().then(() => {
+      this.storage.get('user_sources').then((res) => {
+        let sources = res
+
+        //resulting sources
+        console.log(sources)
+
+        while (index < sources.length) {
+
+          console.log('Source: ' + sources[index])
+
+          //Format source to lower case
+          let formatted_source = sources[index].toLowerCase()
+          console.log('Formatted Source: ' + formatted_source)
+
+          //Format resulting source using either space character or dot character
+          let valid_source = formatted_source.split(' ').join('-')
+          console.log('Valid source: ' + valid_source)
+          
+          //push valid_source into valid_sources array
+          this.valid_sources.push(valid_source)
+          console.log(this.valid_sources)
+
+          //increment index
+          index += 1
+        }
+
+      })
+
+    })
+
+          //Store valid sources in localDB
+          this.storage.ready().then(() => {
+            this.storage.set('valid_sources', this.valid_sources)
+            console.log('Valid sources saved!')
+          })
+
+  }
+
+
+  get_sources() {
     
     for(let interest of this.user_interests){
 
@@ -61,48 +120,36 @@ export class FeedPage {
       })
 
     }
-  
 
   }
 
-  //Function to format sources into valid sources supplied by newsapi.org
-  format_sources() {
+  get_articles() {
 
-    //Specify starting point
-    let index: number = 0
-
-    this.storage.ready().then(() => {
-      this.storage.get('user_sources').then((res) => {
-        let sources = res
-
-        //resulting sources
-        console.log(sources)
-
-        while (index < sources.length) {
-
-          console.log('Source: ' + sources[index])
-
-          //Format source to lower case
-          let formatted_source = sources[index].toLowerCase()
-          console.log('Formatted Source: ' + formatted_source)
-
-          //Format resulting source using either space character or dot character
-          let valid_source = formatted_source.split(' ').join('-')
-          let valid_source1 = formatted_source.split('.').join('-')
-          console.log('Valid source: ' + valid_source)
-          console.log('Wired.de Valid Source: ' + valid_source1)
-          
-          //push valid_source into valid_sources array
-          this.valid_sources.push(valid_source)
-          this.valid_sources.push(valid_source1)
-
-          //increment index
-          index += 1
-        }
-
-      })
-
+    this.http.get('https://newsapi.org/v1/articles?source=the-next-web&sortBy=latest&apiKey=bb760047fe38451480798662b487c974').map((res) => res.json()).subscribe((data) => {
+      console.log('Data \n' + data)
+      this.articles.push(data.articles)
+      console.log('Articles: \n' + this.articles)
     })
+  
+    // for(let user_source in this.valid_sources) {
+
+    //   let index: number = 0
+
+    //   while(index < this.valid_sources.length) {
+
+    //     this.http.get('https://newsapi.org/v1/articles?source=' + this.valid_sources[index] + '&sortBy=latest&apiKey=' + this.newsapi_key)
+    //       .map((res) => res.json())
+    //       .subscribe((data) => {
+    //         this.articles.push(data)
+    //         console.log(this.articles)
+    //       })
+
+    //       index += 1
+
+    //   }
+      
+    // }
+
   }
 
   ionViewDidLoad() {
