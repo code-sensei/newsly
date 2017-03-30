@@ -12,6 +12,7 @@ import { FeedPage } from '../pages/feed/feed';
 @Component({
   templateUrl: 'app.html'
 })
+
 export class MyApp {
  // public rootPage : any;
  rootPage = InterestPage
