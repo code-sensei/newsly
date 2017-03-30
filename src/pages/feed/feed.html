@@ -9,4 +9,12 @@
 
   <h2 class="center-align">Feed</h2>
 
+  <ion-list inset no-lines class="card-background-page">
+    <ion-card *ngFor="let article of articles">
+      <img [src]="article.urlToImage"/>
+      <div class="card-title">{{article.title}}</div>
+      <div class="card-subtitle">{{article.description}}</div>
+    </ion-card>
+  </ion-list>
+
 </ion-content>

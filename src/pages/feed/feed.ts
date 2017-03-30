@@ -21,10 +21,8 @@ export class FeedPage {
   newsapi_key: string = 'bb760047fe38451480798662b487c974'
   user_interests: any[] = []
   user_sources: any[] = []
-
   valid_sources: any[] = []
-
-  articles: any[] = []
+  articles: any = []
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public http: Http, public storage: Storage) {
 
@@ -36,12 +34,10 @@ export class FeedPage {
     console.log(this.user_interests)
 
     //Get user sources 
-    this.get_sources()
+    this.get_sources()     
 
-    //Get user articles
-    this.get_articles()
-
-    console.error(this.articles)
+          // //Get articles
+          // this.get_articles()
 
   }
 
@@ -74,6 +70,16 @@ export class FeedPage {
           this.valid_sources.push(valid_source)
           console.log(this.valid_sources)
 
+          //Store valid sources in localDB
+          this.storage.ready().then(() => {
+            this.storage.set('valid_sources', this.valid_sources)
+            console.log('Saved valid_sources: ' + this.valid_sources)
+              console.log('Valid sources saved!')
+
+              //Get articles
+              this.get_articles()
+            })
+
           //increment index
           index += 1
         }
@@ -82,12 +88,7 @@ export class FeedPage {
 
     })
 
-          //Store valid sources in localDB
-          this.storage.ready().then(() => {
-            this.storage.set('valid_sources', this.valid_sources)
-            console.log('Valid sources saved!')
-          })
-
+          
   }
 
 
@@ -125,13 +126,26 @@ export class FeedPage {
 
   get_articles() {
 
-    this.http.get('https://newsapi.org/v1/articles?source=the-next-web&sortBy=latest&apiKey=bb760047fe38451480798662b487c974').map((res) => res.json()).subscribe((data) => {
-      console.log('Data \n' + data)
-      this.articles.push(data.articles)
-      console.log('Articles: \n' + this.articles)
+    console.log("Getting articles")
+
+    this.storage.ready().then(() => {
+      this.storage.get('valid_sources').then((res) => {
+        let source = res
+
+        for(let i: number = 0; i < source.length; i++){
+          this.http.get('https://newsapi.org/v1/articles?source=' + source[i] + '&sortby=latest&apiKey=' + this.newsapi_key)
+          .map((res) => res.json())
+          .subscribe((data) => {
+            console.log(data)
+            this.articles.push(data.articles)
+          })
+        }
+      })
     })
-  
-    // for(let user_source in this.valid_sources) {
+
+    
+
+    // for(let source of this.valid_sources){
 
     //   let index: number = 0
 
@@ -140,16 +154,21 @@ export class FeedPage {
     //     this.http.get('https://newsapi.org/v1/articles?source=' + this.valid_sources[index] + '&sortBy=latest&apiKey=' + this.newsapi_key)
     //       .map((res) => res.json())
     //       .subscribe((data) => {
-    //         this.articles.push(data)
+    //         console.log(data)
+    //         this.articles.push(data.articles)
     //         console.log(this.articles)
+
+    //         //save articles to localDB
+    //         this.storage.ready().then(() => {
+    //           this.storage.set('latest_articles', this.articles)
+    //           console.log('Articles saved to local DB')
+    //         })
+    //         index += 1
     //       })
-
-    //       index += 1
-
     //   }
-      
-    // }
 
+    // }
+      
   }
 
   ionViewDidLoad() {
