@@ -9,12 +9,30 @@
 
   <h2 class="center-align">Feed</h2>
 
-  <ion-list inset no-lines class="card-background-page">
-    <ion-card *ngFor="let article of articles">
-      <img [src]="article.urlToImage"/>
-      <div class="card-title">{{article.title}}</div>
-      <div class="card-subtitle">{{article.description}}</div>
-    </ion-card>
+  <ion-list no-lines class="card-background-page">
+    <ion-card *ngFor = "let article of articles">
+  <img [src]="article.urlToImage"/>
+  <ion-card-content>
+    <ion-card-title>
+      {{article.title}}
+      </ion-card-title>
+    <p>
+      {{article.description}}
+    </p>
+  </ion-card-content>
+  <ion-row>
+    <ion-col width-50>
+      <button ion-button outline round (click)="view_article($event)">
+        Expand 
+      </button>
+    </ion-col>
+    <ion-col width-50>
+      <button ion-button outline round (click)="article_source($event)">
+        Source
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-card>
   </ion-list>
 
 </ion-content>

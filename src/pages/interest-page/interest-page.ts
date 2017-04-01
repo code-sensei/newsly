@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController, NavParams } from 'ionic-angular';
+import { Http } from '@angular/http';
 
 import { Storage } from '@ionic/storage';
 
@@ -50,9 +51,12 @@ new_interest: string;
 
   user_interests: any = [];
 
+  user_sources: any = [];
+
+  source_ids: any = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public alert: AlertController,
-  public storage: Storage) {
+  public storage: Storage, public http: Http) {
 
     
     
@@ -135,13 +139,57 @@ new_interest: string;
         this.storage.set('interests', this.user_interests)
       })
     }
-    this.toFeedPage();
+    this.get_sources();
   }
 //Move user to the Feed Page
   toFeedPage() {
     this.navCtrl.push(FeedPage, {
       user_interests: this.user_interests
     })
+  }
+
+  get_sources() {
+
+    this.storage.ready().then(() => {
+      this.storage.get('interests').then((res) => {
+        let user_interests = res
+
+          for(let i: number = 0; i < user_interests.length; i++){
+
+            let source_index = 0;
+            let valid_interest: string = user_interests[i].toLowerCase();
+
+            this.http.get('https://newsapi.org/v1/sources?category=' + valid_interest).map((res) => res.json()).subscribe((data) => {
+              console.log(data)
+              console.log('data length: ' + data.sources.length)
+
+              while (source_index < data.sources.length) {
+                console.log('Current index: ' + source_index)
+                this.user_sources.push(data.sources[source_index].name)
+                this.source_ids.push(data.sources[source_index].id)
+                source_index += 1
+                console.log('Sources: ' + this.user_sources)
+                console.log('Source Id: ' + this.source_ids)
+                
+              }
+
+              this.storage.ready().then(() => {
+                this.storage.set('user_sources', this.user_sources)
+                console.log('User sources saved');
+                this.storage.set('source_ids', this.source_ids);
+                console.log('Source Ids saved');
+
+                this.toFeedPage();
+                
+              })
+
+              
+            })
+
+          }
+      })
+    })
+      
   }
 
   
@@ -151,3 +199,5 @@ new_interest: string;
   }
 
 }
+
+
