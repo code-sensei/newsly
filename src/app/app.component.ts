@@ -14,16 +14,16 @@ import { FeedPage } from '../pages/feed/feed';
 })
 
 export class MyApp {
- // public rootPage : any;
- rootPage = InterestPage
+  public rootPage : any;
+ //rootPage = InterestPage
 
   constructor(platform: Platform, public auth: Auth) {
 
-    // if(this.auth.isAuthenticated()) {
-    //   this.rootPage = FeedPage
-    // } else {
-    //   this.rootPage = HomePage
-    // }
+    if(this.auth.isAuthenticated()) {
+      this.rootPage = FeedPage
+    } else {
+      this.rootPage = HomePage
+    }
 
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
